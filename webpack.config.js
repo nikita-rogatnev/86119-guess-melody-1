@@ -1,15 +1,17 @@
 const path = require(`path`);
 
 module.exports = {
-  entry: `./src/index.js`,
+  mode: `development`,
+  entry: `./src/index.jsx`,
   output: {
     filename: `bundle.js`,
-    path: path.join(__dirname, `public`)
+    path: path.join(__dirname, `./public`), // eslint-disable-line
   },
   devServer: {
-    contentBase: path.join(__dirname, `public`),
-    compress: false,
-    port: 1337,
+    contentBase: path.join(__dirname, `./public`), // eslint-disable-line
+    port: 8080,
+    compress: true,
+    hot: true,
   },
   module: {
     rules: [
@@ -19,8 +21,8 @@ module.exports = {
         use: {
           loader: `babel-loader`,
         },
-      }
+      },
     ],
   },
-  devtool: `source-map`
+  devtool: `source-map`,
 };
