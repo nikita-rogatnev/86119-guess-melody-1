@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from 'react-dom';
-import App from './components/app/app.jsx';
+import App from './components/app/app';
 
 const appContainer = document.querySelector(`.main`);
 const settings = {

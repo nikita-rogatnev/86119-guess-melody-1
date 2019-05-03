@@ -1,7 +1,7 @@
 import React from 'react';
 
 const WelcomeScreen = (props) => {
-  const {time, errorCount} = props; // eslint-disable-line
+  const {time, errorCount} = props;
 
   return (
     <section className="welcome">

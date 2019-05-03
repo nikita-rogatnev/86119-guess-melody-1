@@ -1,8 +1,8 @@
 import React from 'react';
-import WelcomeScreen from '../welcome-screen/welcome-screen.jsx';
+import WelcomeScreen from '../welcome-screen/welcome-screen';
 
 const App = (props) => {
-  const {gameTime, errorCount} = props; // eslint-disable-line
+  const {gameTime, errorCount} = props;
 
   return (
     <WelcomeScreen
