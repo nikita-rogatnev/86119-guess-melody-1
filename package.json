@@ -5,8 +5,8 @@
   "description": "Учебный проект «Угадай мелодию» от HTML Academy",
   "scripts": {
     "build": "webpack --mode development",
-    "start": "webpack-dev-server",
-    "eslint": "eslint src/**/*.js src/**/*.jsx",
+    "start": "webpack --watch & webpack-dev-server --open",
+    "eslint": "eslint src/**/*.jsx",
     "test": "npm run eslint"
   },
   "devDependencies": {
@@ -23,5 +23,9 @@
   },
   "engines": {
     "node": "10"
+  },
+  "dependencies": {
+    "react": "16.8.6",
+    "react-dom": "16.8.6"
   }
 }
