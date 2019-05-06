@@ -6,6 +6,11 @@ const appContainer = document.querySelector(`.main`);
 const settings = {
   gameTime: 55,
   errorCount: 3,
+  onClick: () => {
+  },
 };
 
-ReactDOM.render(<App errorCount={settings.errorCount} gameTime={settings.gameTime}/>, appContainer);
+ReactDOM.render(<App
+  errorCount={settings.errorCount}
+  gameTime={settings.gameTime}
+  onStartButtonClick={settings.onClick}/>, appContainer);
