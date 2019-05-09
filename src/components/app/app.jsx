@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 
 import WelcomeScreen from "../welcome-screen/welcome-screen";
@@ -10,7 +10,7 @@ const Type = {
   GENRE: `game--genre`,
 };
 
-class App extends Component {
+class App extends PureComponent {
   constructor(props) {
     super(props);
 
@@ -19,7 +19,7 @@ class App extends Component {
     };
   }
 
-  _getScreen(question, onClick) {
+  getScreen(question, changeViewToNextScreen) {
     if (!question) {
       const {
         errorCount,
@@ -29,7 +29,7 @@ class App extends Component {
       return <WelcomeScreen
         errorCount={errorCount}
         gameTime={gameTime}
-        onClick={onClick}
+        onClick={changeViewToNextScreen}
       />;
     }
 
@@ -37,17 +37,25 @@ class App extends Component {
       case `genre`:
         return <QuestionGenreScreen
           question={question}
-          onAnswer={onClick}
+          onAnswer={changeViewToNextScreen}
         />;
 
       case `artist`:
         return <ArtistQuestionScreen
           question={question}
-          onAnswer={onClick}
+          onAnswer={changeViewToNextScreen}
         />;
     }
 
     return null;
+  }
+
+  changeViewToNextScreen(questions, question) {
+    this.setState({
+      question: question + 1 >= questions.length
+        ? -1
+        : question + 1,
+    });
   }
 
   render() {
@@ -63,11 +71,7 @@ class App extends Component {
 
         <svg xmlns="http://www.w3.org/2000/svg" className="timer" viewBox="0 0 780 780">
           <circle className="timer__line" cx="390" cy="390" r="370"
-            style={{
-              filter: `url(#blur)`,
-              transform: `rotate(-90deg) scaleY(-1)`,
-              transformOrigin: `center`,
-            }}
+            style={{filter: `url(#blur)`, transform: `rotate(-90deg) scaleY(-1)`, transformOrigin: `center`}}
           />
         </svg>
 
@@ -84,12 +88,8 @@ class App extends Component {
         </div>
       </header>
 
-      {this._getScreen(questions[question], () => {
-        this.setState({
-          question: question + 1 >= questions.length
-            ? -1
-            : question + 1,
-        });
+      {this.getScreen(questions[question], () => {
+        this.changeViewToNextScreen(questions, question);
       })}
     </section>;
   }
