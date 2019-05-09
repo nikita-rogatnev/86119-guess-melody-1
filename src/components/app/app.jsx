@@ -15,12 +15,12 @@ class App extends PureComponent {
     super(props);
 
     this.state = {
-      question: -1,
+      currentQuestionNum: -1,
     };
   }
 
-  getScreen(question, changeViewToNextScreen) {
-    if (!question) {
+  _getScreen() {
+    if (!this.state.currentQuestionNum.type) {
       const {
         errorCount,
         gameTime,
@@ -29,38 +29,38 @@ class App extends PureComponent {
       return <WelcomeScreen
         errorCount={errorCount}
         gameTime={gameTime}
-        onClick={changeViewToNextScreen}
+        onClick={this.changeViewToNextScreen}
       />;
     }
 
-    switch (question.type) {
+    switch (this.state.currentQuestionNum.type) {
       case `genre`:
         return <QuestionGenreScreen
-          question={question}
-          onAnswer={changeViewToNextScreen}
+          question={this.props.questions}
+          onAnswer={this.changeViewToNextScreen}
         />;
 
       case `artist`:
         return <ArtistQuestionScreen
-          question={question}
-          onAnswer={changeViewToNextScreen}
+          question={this.props.questions}
+          onAnswer={this.changeViewToNextScreen}
         />;
     }
 
     return null;
   }
 
-  changeViewToNextScreen(questions, question) {
+  changeViewToNextScreen() {
     this.setState({
-      question: question + 1 >= questions.length
+      currentQuestionNum: this.state.currentQuestionNum + 1 >= this.props.questions.length
         ? -1
-        : question + 1,
+        : this.state.currentQuestionNum + 1,
     });
   }
 
   render() {
     const {questions} = this.props;
-    const {question} = this.state;
+    const {currentQuestionNum} = this.state;
 
     return <section className={`game ${Type.ARTIST}`}>
       <header className="game__header">
@@ -88,8 +88,8 @@ class App extends PureComponent {
         </div>
       </header>
 
-      {this.getScreen(questions[question], () => {
-        this.changeViewToNextScreen(questions, question);
+      {this._getScreen(questions[currentQuestionNum], () => {
+        this.changeViewToNextScreen(questions, currentQuestionNum);
       })}
     </section>;
   }
