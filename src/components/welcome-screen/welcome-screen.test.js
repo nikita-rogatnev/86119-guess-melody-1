@@ -6,9 +6,9 @@ import WelcomeScreen from './welcome-screen';
 it(`WelcomeScreen renders correctly`, () => {
   const tree = renderer
     .create(<WelcomeScreen
-      time={0}
       errorCount={0}
-      onStartButtonClick={jest.fn()}
+      gameTime={0}
+      onClick={jest.fn()}
     />).toJSON();
 
   expect(tree).toMatchSnapshot();
