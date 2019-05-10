@@ -19,8 +19,8 @@ class App extends PureComponent {
     };
   }
 
-  _getScreen() {
-    if (!this.state.currentQuestionNum.type) {
+  _getScreen(questions) {
+    if (this.state.currentQuestionNum === -1) {
       const {
         errorCount,
         gameTime,
@@ -33,16 +33,16 @@ class App extends PureComponent {
       />;
     }
 
-    switch (this.state.currentQuestionNum.type) {
+    switch (questions.type) {
       case `genre`:
         return <QuestionGenreScreen
-          question={this.props.questions}
+          question={questions}
           onAnswer={this.changeViewToNextScreen}
         />;
 
       case `artist`:
         return <ArtistQuestionScreen
-          question={this.props.questions}
+          question={questions}
           onAnswer={this.changeViewToNextScreen}
         />;
     }
@@ -50,13 +50,14 @@ class App extends PureComponent {
     return null;
   }
 
-  changeViewToNextScreen() {
+  changeViewToNextScreen = () => {
+    console.log(this.state.currentQuestionNum, this.props.questions.length);
     this.setState({
       currentQuestionNum: this.state.currentQuestionNum + 1 >= this.props.questions.length
         ? -1
         : this.state.currentQuestionNum + 1,
     });
-  }
+  };
 
   render() {
     const {questions} = this.props;
