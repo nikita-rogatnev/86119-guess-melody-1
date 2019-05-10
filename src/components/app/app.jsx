@@ -51,7 +51,6 @@ class App extends PureComponent {
   }
 
   changeViewToNextScreen = () => {
-    console.log(this.state.currentQuestionNum, this.props.questions.length);
     this.setState({
       currentQuestionNum: this.state.currentQuestionNum + 1 >= this.props.questions.length
         ? -1
