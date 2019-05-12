@@ -11,9 +11,9 @@ describe(`WelcomeScreen`, () => {
     const clickHandler = jest.fn();
 
     const welcomeScreen = shallow(<WelcomeScreen
-      time={0}
       errorCount={0}
-      onStartButtonClick={clickHandler}
+      gameTime={0}
+      onClick={clickHandler}
     />);
 
     const startGameButton = welcomeScreen.find(`.welcome__button`);
