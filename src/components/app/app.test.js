@@ -2,13 +2,14 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 
 import App from './app';
+import questions from "../../mocks/questions";
 
 it(`App renders correctly`, () => {
   const tree = renderer
     .create(<App
-      gameTime={0}
       errorCount={0}
-      onStartButtonClick={jest.fn()}
+      gameTime={0}
+      questions={questions}
     />).toJSON();
 
   expect(tree).toMatchSnapshot();
