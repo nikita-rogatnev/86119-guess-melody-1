@@ -54,9 +54,9 @@ GenreQuestionScreen.propTypes = {
   question: PropTypes.shape({
     answers: PropTypes.arrayOf(PropTypes.shape({
       src: PropTypes.string.isRequired,
-      genre: PropTypes.oneOf([`rock`, `jazz`, `blues`]).isRequired,
+      genre: PropTypes.oneOf([`rock`, `jazz`, `blues`, `pop`]).isRequired,
     })).isRequired,
-    genre: PropTypes.oneOf([`rock`, `jazz`, `blues`]).isRequired,
+    genre: PropTypes.oneOf([`rock`, `jazz`, `blues`, `pop`]).isRequired,
     type: PropTypes.oneOf([`genre`, `artist`]).isRequired,
   }).isRequired,
 };
