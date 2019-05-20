@@ -75,7 +75,6 @@ it(`Question answer switches to another question`, () => {
   expect(app.state(`question`)).toEqual(1);
 });
 
-
 it(`Last question answer leads to the first screen`, () => {
   const {questions} = mock;
   const app = mount(<App

@@ -1,66 +1,61 @@
-import React, {PureComponent} from "react";
+import React, {Component} from "react";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
 
-import WelcomeScreen from "../welcome-screen/welcome-screen";
+import {ActionCreator} from "../../reducer";
 import ArtistQuestionScreen from "../artist-question-screen/artist-question-screen";
 import QuestionGenreScreen from "../genre-question-screen/genre-question-screen";
+import WelcomeScreen from "../welcome-screen/welcome-screen";
 
 const Type = {
   ARTIST: `game--artist`,
   GENRE: `game--genre`,
 };
 
-class App extends PureComponent {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      currentQuestionNum: -1,
-    };
-  }
-
-  _getScreen(questions) {
-    if (this.state.currentQuestionNum === -1) {
+class App extends Component {
+  _getScreen(question) {
+    if (!question) {
       const {
-        errorCount,
+        maxMistakes,
         gameTime,
+        onWelcomeScreenClick,
       } = this.props;
 
       return <WelcomeScreen
-        errorCount={errorCount}
+        errorCount={maxMistakes}
         gameTime={gameTime}
-        onClick={this.changeViewToNextScreen}
+        onClick={onWelcomeScreenClick}
       />;
     }
 
-    switch (questions.type) {
+    const {
+      onUserAnswer,
+      mistakes,
+      maxMistakes,
+    } = this.props;
+
+    switch (question.type) {
       case `genre`:
         return <QuestionGenreScreen
-          question={questions}
-          onAnswer={this.changeViewToNextScreen}
+          question={question}
+          onAnswer={(userAnswer) => onUserAnswer(userAnswer, question, mistakes, maxMistakes)}
         />;
 
       case `artist`:
         return <ArtistQuestionScreen
-          question={questions}
-          onAnswer={this.changeViewToNextScreen}
+          question={question}
+          onAnswer={(userAnswer) => onUserAnswer(userAnswer, question, mistakes, maxMistakes)}
         />;
     }
 
     return null;
   }
 
-  changeViewToNextScreen = () => {
-    this.setState({
-      currentQuestionNum: this.state.currentQuestionNum + 1 >= this.props.questions.length
-        ? -1
-        : this.state.currentQuestionNum + 1,
-    });
-  };
-
   render() {
-    const {questions} = this.props;
-    const {currentQuestionNum} = this.state;
+    const {
+      questions,
+      step,
+    } = this.props;
 
     return <section className={`game ${Type.ARTIST}`}>
       <header className="game__header">
@@ -70,8 +65,7 @@ class App extends PureComponent {
         </a>
 
         <svg xmlns="http://www.w3.org/2000/svg" className="timer" viewBox="0 0 780 780">
-          <circle className="timer__line" cx="390" cy="390" r="370"
-            style={{filter: `url(#blur)`, transform: `rotate(-90deg) scaleY(-1)`, transformOrigin: `center`}}
+          <circle className="timer__line" cx="390" cy="390" r="370" style={{filter: `url(#blur)`, transform: `rotate(-90deg) scaleY(-1)`, transformOrigin: `center`}}
           />
         </svg>
 
@@ -88,15 +82,35 @@ class App extends PureComponent {
         </div>
       </header>
 
-      {this._getScreen(questions[currentQuestionNum])}
+      {this._getScreen(questions[step])}
     </section>;
   }
 }
 
 App.propTypes = {
-  errorCount: PropTypes.number.isRequired,
+  mistakes: PropTypes.number.isRequired,
+  maxMistakes: PropTypes.number.isRequired,
   gameTime: PropTypes.number.isRequired,
   questions: PropTypes.array.isRequired,
+  step: PropTypes.number.isRequired,
+  onUserAnswer: PropTypes.func.isRequired,
+  onWelcomeScreenClick: PropTypes.func.isRequired,
 };
 
-export default App;
+const mapStateToProps = (state, ownProps) => Object.assign({}, ownProps, {
+  step: state.step,
+  mistakes: state.mistakes,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onWelcomeScreenClick: () => dispatch(ActionCreator.incrementStep()),
+
+  onUserAnswer: (userAnswer, question, mistakes, maxMistakes) => {
+    dispatch(ActionCreator.incrementStep());
+    dispatch(ActionCreator.incrementMistake(userAnswer, question, mistakes, maxMistakes));
+  },
+});
+
+export {App};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

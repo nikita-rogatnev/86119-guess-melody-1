@@ -1,11 +1,11 @@
-import React, {PureComponent} from "react";
+import React, {PureComponent, createRef} from "react";
 import PropTypes from "prop-types";
 
-class AudioPlayer extends PureComponent {
+export default class AudioPlayer extends PureComponent {
   constructor(props) {
     super(props);
 
-    this._audioRef = React.createRef();
+    this._audioRef = createRef();
 
     this.state = {
       progress: 0,
@@ -20,7 +20,7 @@ class AudioPlayer extends PureComponent {
     const {isLoading, isPlaying} = this.state;
 
     return (
-      <React.Fragment>
+      <>
         <button
           className={`track__button track__button--${isPlaying ? `pause` : `play`}`}
           type="button"
@@ -32,7 +32,7 @@ class AudioPlayer extends PureComponent {
             ref={this._audioRef}
           />
         </div>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -57,7 +57,7 @@ class AudioPlayer extends PureComponent {
     });
 
     audio.ontimeupdate = () => this.setState({
-      progress: audio.currentTime,
+      progress: audio.currentTime
     });
   }
 
@@ -92,5 +92,3 @@ AudioPlayer.propTypes = {
   onPlayButtonClick: PropTypes.func.isRequired,
   src: PropTypes.string.isRequired,
 };
-
-export default AudioPlayer;

@@ -27,12 +27,17 @@ const mock = {
   },
 };
 
+
 it(`ArtistQuestionScreen is rendered correctly`, () => {
   const {question} = mock;
   const tree = renderer.create(<ArtistQuestionScreen
     onAnswer={jest.fn()}
     question={question}
-  />).toJSON();
+  />, {
+    createNodeMock: () => {
+      return {};
+    }
+  }).toJSON();
 
   expect(tree).toMatchSnapshot();
 });
